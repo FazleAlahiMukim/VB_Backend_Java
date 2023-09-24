@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: main.BackendApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.784 s - in main.BackendApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.635 s - in main.BackendApplicationTests

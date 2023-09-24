@@ -3,4 +3,6 @@ G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\entity\AllPlans.java
 G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\BackendApplication.java
 G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\entity\Plan.java
 G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\service\PlannerService.java
+G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\service\SearchService.java
+G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\apiController\SearchController.java
 G:\Study\L4T1\CSE408\Therap\Backend\src\main\java\main\apiController\PlannerController.java
