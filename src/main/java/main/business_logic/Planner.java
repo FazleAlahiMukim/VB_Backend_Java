@@ -261,9 +261,9 @@ public class Planner {
         }
 
         //run the algorithm
-        System.out.println("Before TSP: " + LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
+        System.out.println("Before TSP: " + LocalTime.now().getMinute() + ":" + LocalTime.now().getSecond());
         List<List<Integer>> tsp_result = tsp_algorithm(distanceMatrix, timeMatrix, spotOpeningHours, averageTimeSpent, tags, startTime, endTime, preferences, mustVisitIndices);
-        System.out.println("After TSP: " + LocalTime.now().getHour() + ":" + LocalTime.now().getMinute());
+        System.out.println("After TSP: " + LocalTime.now().getMinute() + ":" + LocalTime.now().getSecond());
 
         Map<String, Object> result = new HashMap<>();
         result.put("tsp_result", tsp_result);

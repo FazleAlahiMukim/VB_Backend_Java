@@ -7,15 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
 public class PlannerController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
+//    SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
     int costPerKM = 20;
     int costPerKMLongDistance = 5;
     int costResidence = 1500;
@@ -36,14 +39,18 @@ public class PlannerController {
     }
 
     String dateFormatter(Calendar date) {
-        return date.get(Calendar.YEAR) + "-" + (date.get(Calendar.MONTH) + 1) + "-" + date.get(Calendar.DATE);
+        int year = date.get(Calendar.YEAR);
+        int month = date.get(Calendar.MONTH) + 1;
+        int day = date.get(Calendar.DATE);
+        // Format the month to ensure it has two digits
+        String formattedMonth = String.format("%02d", month);
+        return year + "-" + formattedMonth + "-" + day;
     }
 
     List<LinkedHashMap<String, Object>> getClusterValueList(Map<String, Object> plan, Calendar startTime, List<Integer> tsp_result, Map<String, Object> Data) {
         double [][] timeMatrix = (double[][]) plan.get("timeMatrix");
         double [][] distanceMatrix = (double[][]) plan.get("distanceMatrix");
-        LocalTime lastEndTime = LocalTime.of(10, 0);
-        List<LinkedHashMap<String, Object>> cluster_value_list = new ArrayList<>();
+        LocalTime lastEndTime = LocalTime.of(10, 0);List<LinkedHashMap<String, Object>> cluster_value_list = new ArrayList<>();
         double totalDistance = 0;
 
         for (int i = 0; i < tsp_result.size(); i++) {
@@ -51,10 +58,10 @@ public class PlannerController {
             if (tsp_result.get(i) == -1) {
                 String name = "Restaurant";
                 int id = -1;
-                String startTime_t = lastEndTime.format(formatter);
+                String startTime_t = lastEndTime.format(formatter).toUpperCase();
                 int avg_time_spent = 1;
                 lastEndTime = lastEndTime.plusHours(avg_time_spent);
-                String endTime_t = lastEndTime.format(formatter);
+                String endTime_t = lastEndTime.format(formatter).toUpperCase();
                 //lat will be previous spots lat
                 double lat = (double) cluster_value_list.get(cluster_value_list.size() - 1).get("lat");
                 //lng will be previous spots lng
@@ -86,10 +93,11 @@ public class PlannerController {
             var tourist_spots = (List<Map<String, Object>>) Data.get("tourist_spots");
             String name = (String) tourist_spots.get(tsp_result.get(i)).get("place");
             int id = (int) tourist_spots.get(tsp_result.get(i)).get("id");
-            String startTime_t = lastEndTime.format(formatter);
+            String startTime_t = lastEndTime.format(formatter).toUpperCase();
+
             int avg_time_spent = (int) (double) tourist_spots.get(tsp_result.get(i)).get("average_time_spent");
             lastEndTime = lastEndTime.plusHours(avg_time_spent);
-            String endTime_t = lastEndTime.format(formatter);
+            String endTime_t = lastEndTime.format(formatter).toUpperCase();
             double lat = (double) tourist_spots.get(tsp_result.get(i)).get("latitude");
             double lng = (double) tourist_spots.get(tsp_result.get(i)).get("longitude");
             double rating = (double) tourist_spots.get(tsp_result.get(i)).get("rating");
@@ -115,13 +123,14 @@ public class PlannerController {
             spot_obj.put("close", close);
 
             cluster_value_list.add(spot_obj);
+            //timeMatrix is in milliseconds
             if (i < tsp_result.size() - 1) {
                 if (tsp_result.get(i + 1) == -1 && i + 2 < tsp_result.size()) {
-                    lastEndTime = lastEndTime.plusHours((int) timeMatrix[tsp_result.get(i)][tsp_result.get(i + 2)]);
+                    lastEndTime = lastEndTime.plusSeconds((int) timeMatrix[tsp_result.get(i)][tsp_result.get(i + 2)]/1000);
                     totalDistance += distanceMatrix[tsp_result.get(i)][tsp_result.get(i + 2)];
                 }
                 else if (!(tsp_result.get(i + 1) == -1)) {
-                    lastEndTime = lastEndTime.plusHours((int) timeMatrix[tsp_result.get(i)][tsp_result.get(i + 1)]);
+                    lastEndTime = lastEndTime.plusSeconds((int) timeMatrix[tsp_result.get(i)][tsp_result.get(i + 1)]/1000);
                     totalDistance += distanceMatrix[tsp_result.get(i)][tsp_result.get(i + 1)];
                 }
             }
@@ -196,7 +205,7 @@ public class PlannerController {
                 double distance = 0;
                 double time = 0;
                 for (int j = 0; j < location_distance_time_data.size(); j++) {
-                    if (currentLocationName == location_distance_time_data.get(j).get("name1") && nextDayLocationName.equals(location_distance_time_data.get(j).get("name2"))
+                    if (currentLocationName.equals(location_distance_time_data.get(j).get("name1")) && nextDayLocationName.equals(location_distance_time_data.get(j).get("name2"))
                             || currentLocationName.equals(location_distance_time_data.get(j).get("name2")) && nextDayLocationName.equals(location_distance_time_data.get(j).get("name1"))) {
                         distance = (float) location_distance_time_data.get(j).get("distance");
                         time = (float) location_distance_time_data.get(j).get("time");
@@ -556,7 +565,7 @@ public class PlannerController {
             double lat = 0;
             double lng = 0;
             for (int j = 0; j < location_data.size(); j++) {
-                if (destinations.get(i) == location_data.get(j).get("Location_Name")) {
+                if (destinations.get(i).equals(location_data.get(j).get("Location_Name"))) {
                     lat = (double) location_data.get(j).get("Latitude");
                     lng = (double) location_data.get(j).get("Longitude");
                     break;
@@ -584,10 +593,10 @@ public class PlannerController {
                 double distance = -1;
                 double time = -1;
                 for (int j = 0; j < location_distance_time_data.size(); j++) {
-                    if (destinations.get(i) == location_distance_time_data.get(j).get("name1") && currentCity == location_distance_time_data.get(j).get("name2")
-                            || destinations.get(i) == location_distance_time_data.get(j).get("name2") && currentCity == location_distance_time_data.get(j).get("name1")) {
-                        distance = (double) location_distance_time_data.get(j).get("distance");
-                        time = (double) location_distance_time_data.get(j).get("time");
+                    if (destinations.get(i).equals(location_distance_time_data.get(j).get("name1")) && currentCity.equals(location_distance_time_data.get(j).get("name2"))
+                            || destinations.get(i).equals(location_distance_time_data.get(j).get("name2")) && currentCity.equals(location_distance_time_data.get(j).get("name1"))) {
+                        distance = (float) location_distance_time_data.get(j).get("distance");
+                        time = (float) location_distance_time_data.get(j).get("time");
                         break;
                     }
                 }
@@ -617,7 +626,7 @@ public class PlannerController {
             double lat = 0;
             double lng = 0;
             for (int j = 0; j < location_data.size(); j++) {
-                if (destinations.get(i) == location_data.get(j).get("Location_Name")) {
+                if (destinations.get(i).equals(location_data.get(j).get("Location_Name"))) {
                     lat = (double) location_data.get(j).get("Latitude");
                     lng = (double) location_data.get(j).get("Longitude");
                     break;
@@ -643,10 +652,10 @@ public class PlannerController {
                 double distance = -1;
                 double time = -1;
                 for (int j = 0; j < location_distance_time_data.size(); j++) {
-                    if (destinations.get(i) == location_distance_time_data.get(j).get("name1") && currentCity == location_distance_time_data.get(j).get("name2")
-                            || destinations.get(i) == location_distance_time_data.get(j).get("name2") && currentCity == location_distance_time_data.get(j).get("name1")) {
-                        distance = (double) location_distance_time_data.get(j).get("distance");
-                        time = (double) location_distance_time_data.get(j).get("time");
+                    if (destinations.get(i).equals(location_distance_time_data.get(j).get("name1")) && currentCity.equals(location_distance_time_data.get(j).get("name2"))
+                            || destinations.get(i).equals(location_distance_time_data.get(j).get("name2")) && currentCity.equals(location_distance_time_data.get(j).get("name1"))) {
+                        distance = (float) location_distance_time_data.get(j).get("distance");
+                        time = (float) location_distance_time_data.get(j).get("time");
                         break;
                     }
                 }
@@ -690,6 +699,124 @@ public class PlannerController {
         totalCost2 = 0;
         days_allowed_Plan1 = 0;
         return ResponseEntity.status(HttpStatus.OK).body(List.of(final_return_obj, final_return_obj2));
+    }
+
+    @PostMapping("api/planner/update")
+    public ResponseEntity<Object> update(@RequestBody Map<String, Object> requestBody) throws ParseException {
+        System.out.println("Update called");
+        LinkedHashMap<String, Object> initialPlan = (LinkedHashMap<String, Object>) requestBody.get("plan");
+        String date = (String) requestBody.get("date");
+        List<Integer> tourist_spot_add = (List<Integer>) requestBody.get("tourist_spot_add");
+        List<Integer> tourist_spot_remove = (List<Integer>) requestBody.get("tourist_spot_remove");
+
+        //now i have to search the plan for the specific date and update tourist_spots only on that date
+        List<LinkedHashMap<String, Object>> daybyday = (List<LinkedHashMap<String, Object>>) initialPlan.get("daybyday");
+        int daybyday_index = 0;
+        for (int i = 0; i < daybyday.size(); i++) {
+            if (daybyday.get(i).get("date").equals(date)) {
+                daybyday_index = i;
+                break;
+            }
+        }
+
+        //first create the Data to send to planTour
+        Map<String, Object> Data = new HashMap<>();
+        Data.put("place", daybyday.get(daybyday_index).get("location"));
+
+        //now i have to take tourist spots from the cluster of that day, update it with add and remove and call planTour to get new spots for that day
+        List<Map<String, Object>> tourist_spots = new ArrayList<>();
+        List<LinkedHashMap<String, Object>> cluster = (List<LinkedHashMap<String, Object>>) daybyday.get(daybyday_index).get("cluster");
+        for (int i = 0; i < cluster.size(); i++) {
+            LinkedHashMap<String, Object> spot_obj = new LinkedHashMap<>();
+            spot_obj.put("id", cluster.get(i).get("id"));
+            if (tourist_spot_remove.contains(cluster.get(i).get("id")) || cluster.get(i).get("id").equals(-1))
+                continue;
+            spot_obj.put("place", cluster.get(i).get("name"));
+            double average_time_spent = (double) (int) cluster.get(i).get("average_time_spent");
+            spot_obj.put("average_time_spent", average_time_spent);
+            spot_obj.put("longitude", cluster.get(i).get("lng"));
+            spot_obj.put("latitude", cluster.get(i).get("lat"));
+            spot_obj.put("rating", cluster.get(i).get("rating"));
+            spot_obj.put("description", cluster.get(i).get("description"));
+            spot_obj.put("image_url", cluster.get(i).get("imageURL"));
+            spot_obj.put("cost", cluster.get(i).get("cost"));
+            spot_obj.put("open", cluster.get(i).get("open"));
+            spot_obj.put("close", cluster.get(i).get("close"));
+            tourist_spots.add(spot_obj);
+        }
+
+        //i have to get information of tourist_spot_add from database
+        //date = 'yyyy-mm-dd', create a date object and get the day of the week
+        Date date_temp = (new SimpleDateFormat("yyyy-MM-dd").parse(date));
+        int day = date_temp.getDay();
+
+        List<Map<String, Object>> tourist_spots_result = plannerService.findAllSpotsWithTime(Data.get("place").toString(), day);
+        for (int i = 0; i < tourist_spot_add.size(); i++) {
+            int index = 0;
+            for (int j = 0; j < tourist_spots_result.size(); j++) {
+                if (tourist_spot_add.get(i) == (int) tourist_spots_result.get(j).get("Tourist_Spot_ID")) {
+                    index = j;
+                    break;
+                }
+            }
+            LinkedHashMap<String, Object> spot_obj = new LinkedHashMap<>();
+            spot_obj.put("id", tourist_spots_result.get(index).get("Tourist_Spot_ID"));
+            spot_obj.put("place", tourist_spots_result.get(index).get("Name"));
+            double average_time_spent = (double) tourist_spots_result.get(index).get("Average_Time_Spent");
+            spot_obj.put("average_time_spent", average_time_spent);
+            spot_obj.put("longitude", tourist_spots_result.get(index).get("Longitude"));
+            spot_obj.put("latitude", tourist_spots_result.get(index).get("Latitude"));
+            spot_obj.put("rating", tourist_spots_result.get(index).get("Rating"));
+            spot_obj.put("description", tourist_spots_result.get(index).get("Description"));
+            spot_obj.put("image_url", tourist_spots_result.get(index).get("Image_Url"));
+            spot_obj.put("cost", tourist_spots_result.get(index).get("Cost"));
+            spot_obj.put("open", tourist_spots_result.get(index).get("open"));
+            spot_obj.put("close", tourist_spots_result.get(index).get("close"));
+            tourist_spots.add(spot_obj);
+        }
+        Data.put("tourist_spots", tourist_spots);
+
+        //crete startTime and endTime as a calendar instance to send to planTour
+        int startYear = Integer.parseInt(date.substring(0, 4));
+        int startMonth = Integer.parseInt(date.substring(5, 7));
+        int startDay = Integer.parseInt(date.substring(8, 10));
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(startYear, startMonth - 1, startDay, 10, 0);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(startYear, startMonth - 1, startDay, 23, 59);
+//        Date startTime = new Date(date);
+//        startTime.setHours(10);
+//        startTime.setMinutes(0);
+//        Date endTime = new Date(date);
+//        endTime.setHours(23);
+//        endTime.setMinutes(59);
+
+        System.out.println("Taking distance and time matrix: " + LocalDateTime.now().getMinute() +":" + LocalDateTime.now().getSecond());
+        List<Map<String, Object>> distandTimeresult = plannerService.findAllDistAndTime(Data.get("place").toString());
+        System.out.println("Data fetch done: " + LocalDateTime.now().getMinute() +":" + LocalDateTime.now().getSecond());
+
+        //now call planTour to get new spots for that day
+        Map<String, Object> plan = Planner.planTour(Data, startTime, endTime, distandTimeresult, new ArrayList<>(), tourist_spot_add);
+        List<List<Integer>> tsp_result_list = (List<List<Integer>>) plan.get("tsp_result");
+        List<Integer> tsp_result = tsp_result_list.get(0);
+
+        //get cluster_value_list
+        var cluster_value_list = getClusterValueList(plan, startTime, tsp_result, Data);
+
+        //now i have to update the cluster of that day in daybyday
+        daybyday.get(daybyday_index).put("cluster", cluster_value_list);
+
+        //now i have to update the hotel of that day in daybyday
+        Map<String, Object> hotel = (Map<String, Object>) daybyday.get(daybyday_index).get("hotel");
+        hotel.put("place", cluster_value_list.get(cluster_value_list.size() - 1).get("name"));
+        hotel.put("lat", cluster_value_list.get(cluster_value_list.size() - 1).get("lat"));
+        hotel.put("lng", cluster_value_list.get(cluster_value_list.size() - 1).get("lng"));
+        daybyday.get(daybyday_index).put("hotel", hotel);
+
+        //now i have to update the daybyday in initialPlan
+        initialPlan.put("daybyday", daybyday);
+
+        return ResponseEntity.status(HttpStatus.OK).body(initialPlan);
     }
 
     @PostMapping("api/planner/getsuggestion")
