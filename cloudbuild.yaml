@@ -17,8 +17,7 @@ steps:
 - name: docker
   args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed
   dir: '' # Adjust the directory path as needed
-  options:
-  logging: CLOUD_LOGGING_ONLY
+
 
 # Step 7: Pushing the Docker image to GCP Container Registry
 - name: 'gcr.io/cloud-builders/docker'
@@ -37,3 +36,5 @@ steps:
 # Adjust the overall timeout if needed
 timeout: '120m0s' # 2 hours
 images: ['gcr.io/vital-petal-394716/webapp']
+options:
+  logging: CLOUD_LOGGING_ONLY
