@@ -29,7 +29,7 @@ steps:
 
 # Step 9: Deploying the dispatch.yaml file
 # - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['app', 'deploy', 'server/src/main/appengine/dispatch.yaml'] 
+#   args: ['app', 'deploy', 'server/src/main/appengine/dispatch.yaml']  
 #   timeout: '30m0s' 
 
 # Adjust the overall timeout if needed
