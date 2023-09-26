@@ -13,7 +13,8 @@ steps:
 #   dir: 'server' # Adjust the directory path as needed
 
 # Step 6: Building a Docker image using your Dockerfile
-- name: 'gcr.io/cloud-builders/docker'
+# - name: 'gcr.io/cloud-builders/docker'
+- name: docker
   args: ['build', '-t', 'gcr.io/visit-bangladesh/webapp', '.'] # Adjust the image name and tag as needed
   dir: '' # Adjust the directory path as needed
 
