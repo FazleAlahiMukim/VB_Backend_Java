@@ -15,16 +15,16 @@ steps:
 # Step 6: Building a Docker image using your Dockerfile
 # - name: 'gcr.io/cloud-builders/docker' 
 - name: docker
-  args: ['build', '-t', 'gcr.io/visit-bangladesh/webapp', '.'] # Adjust the image name and tag as needed
+  args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed
   dir: '' # Adjust the directory path as needed
 
 # Step 7: Pushing the Docker image to GCP Container Registry
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/visit-bangladesh/webapp'] # Adjust the image name and tag as needed
+  args: ['push', 'gcr.io/vital-petal-394716/webapp'] # Adjust the image name and tag as needed
 
 # Step 8: Deploying the image to Google App Engine
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['app', 'deploy', 'src/main/appengine/app.yaml', '--image-url=gcr.io/visit-bangladesh/webapp']
+  args: ['app', 'deploy', 'src/main/appengine/app.yaml', '--image-url=gcr.io/vital-petal-394716/webapp']
   timeout: '30m0s'
 
 # Step 9: Deploying the dispatch.yaml file
@@ -34,4 +34,4 @@ steps:
 
 # Adjust the overall timeout if needed
 timeout: '120m0s' # 2 hours
-images: ['gcr.io/visit-bangladesh/webapp']
+images: ['gcr.io/vital-petal-394716/webapp']
