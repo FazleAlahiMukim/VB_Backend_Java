@@ -1,5 +1,5 @@
 env: flex
-service: backend
+service: default
 instance_class: F1
 handlers:
 - url: /.*
