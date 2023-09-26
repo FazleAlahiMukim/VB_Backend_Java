@@ -1,0 +1,37 @@
+
+steps:
+# Step 4: Running Maven tests
+# - name: 'maven:3-jdk-8'
+#   entrypoint: 'mvn'
+#   args: ['test']
+#   dir: 'server' # Adjust the directory path as needed
+
+# Step 5: Building the Java application without running tests
+# - name: 'maven:3-jdk-8'
+#   entrypoint: 'mvn'
+#   args: ['clean', 'install', '-Dmaven.test.skip=true']
+#   dir: 'server' # Adjust the directory path as needed
+
+# Step 6: Building a Docker image using your Dockerfile
+# - name: 'gcr.io/cloud-builders/docker'
+- name: 'docker'
+  dir: '/' # Adjust the directory path as needed
+  args: ['build', '-t', 'gcr.io/Visit-Bangladesh/webapp', '.'] # Adjust the image name and tag as needed
+
+# Step 7: Pushing the Docker image to GCP Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/Visit-Bangladesh/webapp'] # Adjust the image name and tag as needed
+
+# Step 8: Deploying the image to Google App Engine
+- name: 'gcr.io/cloud-builders/gcloud'
+  args: ['app', 'deploy', 'src/main/appengine/app.yaml', '--image-url=gcr.io/Visit-Bangladesh/webapp']
+  timeout: '30m0s'
+
+# Step 9: Deploying the dispatch.yaml file
+# - name: 'gcr.io/cloud-builders/gcloud'
+#   args: ['app', 'deploy', 'server/src/main/appengine/dispatch.yaml']
+#   timeout: '30m0s'
+
+# Adjust the overall timeout if needed
+timeout: '120m0s' # 2 hours
+images: ['gcr.io/Visit-Bangladesh/webapp']
