@@ -15,8 +15,10 @@ steps:
 # Step 6: Building a Docker image using your Dockerfile
 # - name: 'gcr.io/cloud-builders/docker' 
 - name: docker
-  args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed 
+  args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed
   dir: '' # Adjust the directory path as needed
+  options:
+  logging: CLOUD_LOGGING_ONLY
 
 # Step 7: Pushing the Docker image to GCP Container Registry
 - name: 'gcr.io/cloud-builders/docker'
@@ -29,7 +31,7 @@ steps:
 
 # Step 9: Deploying the dispatch.yaml file
 # - name: 'gcr.io/cloud-builders/gcloud'
-#   args: ['app', 'deploy', 'server/src/main/appengine/dispatch.yaml']  
+#   args: ['app', 'deploy', 'server/src/main/appengine/dispatch.yaml'] 
 #   timeout: '30m0s' 
 
 # Adjust the overall timeout if needed
