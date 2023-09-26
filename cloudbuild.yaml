@@ -15,7 +15,7 @@ steps:
 # Step 6: Building a Docker image using your Dockerfile
 # - name: 'gcr.io/cloud-builders/docker' 
 - name: docker
-  args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed
+  args: ['build', '-t', 'gcr.io/vital-petal-394716/webapp', '.'] # Adjust the image name and tag as needed 
   dir: '' # Adjust the directory path as needed
 
 # Step 7: Pushing the Docker image to GCP Container Registry
