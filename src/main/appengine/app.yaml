@@ -1,4 +1,5 @@
-env: flex
+runtime: java
+env: standard
 service: default
 instance_class: F1
 handlers:
