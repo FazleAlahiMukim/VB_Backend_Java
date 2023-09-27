@@ -1,0 +1,9 @@
+runtime: java
+env: flex
+threadsafe: true
+service: default
+manual_scaling:
+  instances: 1
+handlers:
+- url: /.*
+  script: this field is required, but ignored
