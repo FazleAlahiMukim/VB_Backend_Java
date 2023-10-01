@@ -109,7 +109,7 @@ public class SearchController {
                 double jaccardSimilarity = calculateJaccardSimilarity((String) tourist_spot.get("Description"), (String) spot.get("Description"));
                 boolean containSpecificWords = descriptionsContainSpecificWords((String) tourist_spot.get("Description"), (String) spot.get("Description"), specificWordsToCheck);
                 double similarityScore = calculateSimilarityScore(jaccardSimilarity, containSpecificWords);
-                if (similarityScore > 0.08) {
+                if (similarityScore > 0.1) {
                     similar_tourist_spots.add(spot);
                 }
             }
