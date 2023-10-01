@@ -65,51 +65,31 @@ public class SearchController {
 
 
         for (Map<String, Object> spot : touristSpots) {
-            String spotName = (String) spot.get("Name");
-            String spotDescription = (String) spot.get("Description");
-            String spotLocation = (String) spot.get("Location_Name");
+            String spotName = ((String) spot.get("Name")).toLowerCase();
+            String spotDescription = ((String) spot.get("Description")).toLowerCase();
+            String spotLocation = ((String) spot.get("Location_Name")).toLowerCase();
 
-            //split the spot name and description into an array of strings, filter out the stop words, and convert all the words to lowercase
-            String[] spotNameWords = spotName.split(" ");
-            spotNameWords = Arrays.stream(spotNameWords).filter(word -> !stopWords.contains(word)).map(word -> word.toLowerCase()).toArray(String[]::new);
-            String[] spotDescriptionWords = spotDescription.split(" ");
-            spotDescriptionWords = Arrays.stream(spotDescriptionWords).filter(word -> !stopWords.contains(word)).map(word -> word.toLowerCase()).toArray(String[]::new);
-            String[] spotLocationWords = spotLocation.split(" ");
-            spotLocationWords = Arrays.stream(spotLocationWords).filter(word -> !stopWords.contains(word)).map(word -> word.toLowerCase()).toArray(String[]::new);
+            // Check if each query word is present in spot name, description, or location words
+            boolean isMatch = true;
 
-            // Check if any query word (excluding stop words) matches with spot name or description words
-            boolean isMatch = false;
             for (String queryWord : queryWords) {
-                for (String nameWord : spotNameWords) {
-                    if (nameWord.contains(queryWord)) {
-                        isMatch = true;
-                        break;
+                // Check if the query word is present in at least one of the spot's name, description, or location
+                if (!spotName.contains(queryWord) && !spotDescription.contains(queryWord) && !spotLocation.contains(queryWord)) {
+                    //now trim the query word from front and back one character and check again
+                    if (queryWord.length() > 2) {
+                        String trimmedQueryWord = queryWord.substring(1, queryWord.length() - 1);
+                        if (!spotName.contains(trimmedQueryWord) && !spotDescription.contains(trimmedQueryWord) && !spotLocation.contains(trimmedQueryWord)) {
+                            isMatch = false;
+                            break;
+                        } else {
+                            continue;
+                        }
                     }
-                }
-                if (isMatch) {
-                    continue;
-                }
-                for (String descWord : spotDescriptionWords) {
-                    if (descWord.contains(queryWord)) {
-                        isMatch = true;
-                        break;
-                    }
-                }
-                if (isMatch) {
-                    continue;
-                }
-                for (String locWord : spotLocationWords) {
-                    if (locWord.contains(queryWord)) {
-                        isMatch = true;
-                        break;
-                    }
-                }
-                if (isMatch) {
-                } else {
+                    isMatch = false;
                     break;
                 }
-
             }
+
             if (isMatch)
                 results.add((spot));
 
