@@ -695,6 +695,8 @@ public class PlannerController {
         final_return_obj2.put("destinations", destination_value2);
         final_return_obj2.put("daybyday", daybyday2);
 
+        if(totalCost2 <= budget) final_return_obj = final_return_obj2;
+
         totalCost = 0;
         totalCost2 = 0;
         days_allowed_Plan1 = 0;
