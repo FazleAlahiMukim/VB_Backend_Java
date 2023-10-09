@@ -917,9 +917,9 @@ public class PlannerController {
             int days = (int) destination_value.get(i).get("days");
             double lat = (double) destination_value.get(i).get("lat");
             double lng = (double) destination_value.get(i).get("lng");
-            double distance = (double) destination_value.get(i).get("distance");
-            double time = (double) destination_value.get(i).get("time");
-            plannerService.storePlanDestination(plan_id, destination_order, name, days, lat, lng, distance, time);
+            var distance = destination_value.get(i).get("distance");
+            var time = destination_value.get(i).get("time");
+            plannerService.storePlanDestination(plan_id, destination_order, name, days, lat, lng,(double) distance,(double) time);
         }
         System.out.println("Destination Stored");
 
