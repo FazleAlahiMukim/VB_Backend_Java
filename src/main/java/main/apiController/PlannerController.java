@@ -260,7 +260,7 @@ public class PlannerController {
         String endDate = (String) requestBody.get("endDate");
         String currentCity = "Dhaka";
         List<String> preferences = (List<String>) requestBody.get("preferences");
-        budget = (int) requestBody.get("budget");
+        budget = Integer.parseInt((String) requestBody.get("budget"));
 
         if (budget == 0) {
             budget = 10000000;
