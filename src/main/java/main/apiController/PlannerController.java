@@ -235,7 +235,7 @@ public class PlannerController {
             daybyday.add(daybyday_obj);
 
             if (type == 1) {
-                if (totalCost >= (budget - 1500)) {
+                if (totalCost >= (budget - 500)) {
                     days_allowed_Plan1 = i + 1;
                     //if there is travel in this day, then i have to remove the travel
                     if(daybyday_obj.get("travel") != null) {
