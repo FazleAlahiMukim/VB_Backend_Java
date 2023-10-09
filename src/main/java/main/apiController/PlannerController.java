@@ -67,7 +67,7 @@ public class PlannerController {
                 double lat = (double) cluster_value_list.get(cluster_value_list.size() - 1).get("lat");
                 //lng will be previous spots lng
                 double lng = (double) cluster_value_list.get(cluster_value_list.size() - 1).get("lng");
-                double rating = 0;
+                int rating = 0;
                 String description = "Restaurant";
                 String imageURL = (String) cluster_value_list.get(cluster_value_list.size() - 1).get("imageURL");
                 String open = "0000";
@@ -82,7 +82,7 @@ public class PlannerController {
                 spot_obj.put("rating", rating);
                 spot_obj.put("description", description);
                 spot_obj.put("imageURL", imageURL);
-                spot_obj.put("average_time_spent", (double) avg_time_spent);
+                spot_obj.put("average_time_spent", avg_time_spent);
                 spot_obj.put("cost", 0);
                 spot_obj.put("open", open);
                 spot_obj.put("close", close);
@@ -96,12 +96,12 @@ public class PlannerController {
             int id = (int) tourist_spots.get(tsp_result.get(i)).get("id");
             String startTime_t = lastEndTime.format(formatter).toUpperCase();
 
-            double avg_time_spent = (double) tourist_spots.get(tsp_result.get(i)).get("average_time_spent");
+            int avg_time_spent = (int) tourist_spots.get(tsp_result.get(i)).get("average_time_spent");
             lastEndTime = lastEndTime.plusHours((int) avg_time_spent);
             String endTime_t = lastEndTime.format(formatter).toUpperCase();
             double lat = (double) tourist_spots.get(tsp_result.get(i)).get("latitude");
             double lng = (double) tourist_spots.get(tsp_result.get(i)).get("longitude");
-            double rating = (double) tourist_spots.get(tsp_result.get(i)).get("rating");
+            int rating = (int) tourist_spots.get(tsp_result.get(i)).get("rating");
             String description = (String) tourist_spots.get(tsp_result.get(i)).get("description");
             String imageURL = (String) tourist_spots.get(tsp_result.get(i)).get("image_url");
             int cost = (int) tourist_spots.get(tsp_result.get(i)).get("cost");
@@ -358,8 +358,8 @@ public class PlannerController {
                     String tourist_spot_name = (String) tourist_spot.get("Name");
                     double longitude = (double) tourist_spot.get("Longitude");
                     double latitude = (double) tourist_spot.get("Latitude");
-                    double average_time_spent = (double) tourist_spot.get("Average_Time_Spent");
-                    double rating = (double) tourist_spot.get("Rating");
+                    int average_time_spent = (int) tourist_spot.get("Average_Time_Spent");
+                    int rating = (int) tourist_spot.get("Rating");
                     String description = (String) tourist_spot.get("Description");
                     String image_url = (String) tourist_spot.get("Image_Url");
                     String tags = (String) tourist_spot.get("Tags");
@@ -736,7 +736,7 @@ public class PlannerController {
                 continue;
             spot_obj.put("place", cluster.get(i).get("name"));
             int average_time_spent = (int) cluster.get(i).get("average_time_spent");
-            spot_obj.put("average_time_spent", (double) average_time_spent);
+            spot_obj.put("average_time_spent", average_time_spent);
             spot_obj.put("longitude", cluster.get(i).get("lng"));
             spot_obj.put("latitude", cluster.get(i).get("lat"));
             spot_obj.put("rating", cluster.get(i).get("rating"));
@@ -765,7 +765,7 @@ public class PlannerController {
             LinkedHashMap<String, Object> spot_obj = new LinkedHashMap<>();
             spot_obj.put("id", tourist_spots_result.get(index).get("Tourist_Spot_ID"));
             spot_obj.put("place", tourist_spots_result.get(index).get("Name"));
-            double average_time_spent = (double) tourist_spots_result.get(index).get("Average_Time_Spent");
+            int average_time_spent = (int) tourist_spots_result.get(index).get("Average_Time_Spent");
             spot_obj.put("average_time_spent", average_time_spent);
             spot_obj.put("longitude", tourist_spots_result.get(index).get("Longitude"));
             spot_obj.put("latitude", tourist_spots_result.get(index).get("Latitude"));
@@ -939,10 +939,10 @@ public class PlannerController {
                 String end_time = (String) cluster.get(j).get("endTime");
                 double lat = (double) cluster.get(j).get("lat");
                 double lng = (double) cluster.get(j).get("lng");
-                double rating = (double) cluster.get(j).get("rating");
+                int rating = (int) cluster.get(j).get("rating");
                 String description = (String) cluster.get(j).get("description");
                 String image_url = (String) cluster.get(j).get("imageURL");
-                double average_time_spent = (double) cluster.get(j).get("average_time_spent");
+                int average_time_spent = (int) cluster.get(j).get("average_time_spent");
                 int cost = (int) cluster.get(j).get("cost");
                 String open = (String) cluster.get(j).get("open");
                 String close = (String) cluster.get(j).get("close");

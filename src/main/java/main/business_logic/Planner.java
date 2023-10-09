@@ -235,7 +235,7 @@ public class Planner {
         //create a array that stores the average time spent in every spots
         List<Integer> averageTimeSpent = new ArrayList<>();
         for (Map<String, Object> spot : tourist_spots) {
-            averageTimeSpent.add((int) ((double) spot.get("average_time_spent") * 60 * 60 * 1000));
+            averageTimeSpent.add((int) spot.get("average_time_spent") * 60 * 60 * 1000);
         }
 
         //create an array of objects that stores the tags of every tourist spots

@@ -125,7 +125,7 @@ public class PlannerService {
         jdbcTemplate.update(sql, plan_id, day_order, date, location);
     }
 
-    public void storeCluster(int plan_id, int day_order, int cluster_order, String name, int id, String start_time, String end_time, double lat, double lng, double rating, String description, String image_url, double average_time_spent, String open, String close, int cost) {
+    public void storeCluster(int plan_id, int day_order, int cluster_order, String name, int id, String start_time, String end_time, double lat, double lng, int rating, String description, String image_url, int average_time_spent, String open, String close, int cost) {
         String sql = "insert into cluster (plan_id, day_order, cluster_order, name, id, starttime, endtime, lat, lng, rating, description, image_url, average_time_spent, open, close, cost) values(? ,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, plan_id, day_order, cluster_order, name, id, start_time, end_time, lat, lng, rating, description, image_url, average_time_spent, open, close, cost);
     }
