@@ -735,11 +735,11 @@ public class PlannerController {
             if (tourist_spot_remove.contains(cluster.get(i).get("id")) || cluster.get(i).get("id").equals(-1))
                 continue;
             spot_obj.put("place", cluster.get(i).get("name"));
-            double average_time_spent = (double) cluster.get(i).get("average_time_spent");
+            int average_time_spent = (int) cluster.get(i).get("average_time_spent");
             spot_obj.put("average_time_spent", average_time_spent);
             spot_obj.put("longitude", cluster.get(i).get("lng"));
             spot_obj.put("latitude", cluster.get(i).get("lat"));
-            spot_obj.put("rating", (double) cluster.get(i).get("rating"));
+            spot_obj.put("rating", cluster.get(i).get("rating"));
             spot_obj.put("description", cluster.get(i).get("description"));
             spot_obj.put("image_url", cluster.get(i).get("imageURL"));
             spot_obj.put("cost", cluster.get(i).get("cost"));
