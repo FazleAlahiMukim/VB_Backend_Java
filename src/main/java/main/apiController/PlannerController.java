@@ -736,7 +736,7 @@ public class PlannerController {
                 continue;
             spot_obj.put("place", cluster.get(i).get("name"));
             int average_time_spent = (int) cluster.get(i).get("average_time_spent");
-            spot_obj.put("average_time_spent", average_time_spent);
+            spot_obj.put("average_time_spent", (double) average_time_spent);
             spot_obj.put("longitude", cluster.get(i).get("lng"));
             spot_obj.put("latitude", cluster.get(i).get("lat"));
             spot_obj.put("rating", cluster.get(i).get("rating"));
