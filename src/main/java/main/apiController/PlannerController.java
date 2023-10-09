@@ -2,6 +2,7 @@ package main.apiController;
 import main.entity.*;
 import main.service.PlannerService;
 import main.business_logic.Planner;
+import org.apache.logging.log4j.CloseableThreadContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -915,11 +916,11 @@ public class PlannerController {
             int destination_order = i;
             String name = (String) destination_value.get(i).get("name");
             int days = (int) destination_value.get(i).get("days");
-            double lat = (double) destination_value.get(i).get("lat");
-            double lng = (double) destination_value.get(i).get("lng");
-            var distance = destination_value.get(i).get("distance");
-            var time = destination_value.get(i).get("time");
-            plannerService.storePlanDestination(plan_id, destination_order, name, days, lat, lng,(double) distance,(double) time);
+            double lat = ((Number) destination_value.get(i).get("lat")).doubleValue();
+            double lng = ((Number) destination_value.get(i).get("lng")).doubleValue();
+            var distance = ((Number) destination_value.get(i).get("distance")).doubleValue();
+            var time = ((Number) destination_value.get(i).get("time")).doubleValue();
+            plannerService.storePlanDestination(plan_id, destination_order, name, days, lat, lng, distance, time);
         }
         System.out.println("Destination Stored");
 
