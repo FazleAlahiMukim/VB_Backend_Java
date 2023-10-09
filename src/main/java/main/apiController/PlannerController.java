@@ -82,7 +82,7 @@ public class PlannerController {
                 spot_obj.put("rating", rating);
                 spot_obj.put("description", description);
                 spot_obj.put("imageURL", imageURL);
-                spot_obj.put("average_time_spent", avg_time_spent);
+                spot_obj.put("average_time_spent", (double) avg_time_spent);
                 spot_obj.put("cost", 0);
                 spot_obj.put("open", open);
                 spot_obj.put("close", close);
@@ -96,8 +96,8 @@ public class PlannerController {
             int id = (int) tourist_spots.get(tsp_result.get(i)).get("id");
             String startTime_t = lastEndTime.format(formatter).toUpperCase();
 
-            int avg_time_spent = (int) (double) tourist_spots.get(tsp_result.get(i)).get("average_time_spent");
-            lastEndTime = lastEndTime.plusHours(avg_time_spent);
+            double avg_time_spent = (double) tourist_spots.get(tsp_result.get(i)).get("average_time_spent");
+            lastEndTime = lastEndTime.plusHours((int) avg_time_spent);
             String endTime_t = lastEndTime.format(formatter).toUpperCase();
             double lat = (double) tourist_spots.get(tsp_result.get(i)).get("latitude");
             double lng = (double) tourist_spots.get(tsp_result.get(i)).get("longitude");
@@ -735,11 +735,11 @@ public class PlannerController {
             if (tourist_spot_remove.contains(cluster.get(i).get("id")) || cluster.get(i).get("id").equals(-1))
                 continue;
             spot_obj.put("place", cluster.get(i).get("name"));
-            double average_time_spent = (double) (int) cluster.get(i).get("average_time_spent");
+            double average_time_spent = (double) cluster.get(i).get("average_time_spent");
             spot_obj.put("average_time_spent", average_time_spent);
             spot_obj.put("longitude", cluster.get(i).get("lng"));
             spot_obj.put("latitude", cluster.get(i).get("lat"));
-            spot_obj.put("rating", cluster.get(i).get("rating"));
+            spot_obj.put("rating", (double) cluster.get(i).get("rating"));
             spot_obj.put("description", cluster.get(i).get("description"));
             spot_obj.put("image_url", cluster.get(i).get("imageURL"));
             spot_obj.put("cost", cluster.get(i).get("cost"));
@@ -942,7 +942,7 @@ public class PlannerController {
                 double rating = (double) cluster.get(j).get("rating");
                 String description = (String) cluster.get(j).get("description");
                 String image_url = (String) cluster.get(j).get("imageURL");
-                int average_time_spent = (int) cluster.get(j).get("average_time_spent");
+                double average_time_spent = (double) cluster.get(j).get("average_time_spent");
                 int cost = (int) cluster.get(j).get("cost");
                 String open = (String) cluster.get(j).get("open");
                 String close = (String) cluster.get(j).get("close");
