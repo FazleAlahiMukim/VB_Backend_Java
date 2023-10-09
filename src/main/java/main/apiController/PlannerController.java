@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class PlannerController {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm a");
