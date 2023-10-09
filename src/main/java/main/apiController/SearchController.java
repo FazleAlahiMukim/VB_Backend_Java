@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class SearchController {
     private static final Set<String> stopWords = new HashSet<>(Arrays.asList("the", "and", "in", "from", "or", "to" /* Add more stop words here */));
