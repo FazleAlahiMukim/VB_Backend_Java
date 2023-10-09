@@ -682,7 +682,7 @@ public class PlannerController {
         LinkedHashMap<String, Object> final_return_obj2 = new LinkedHashMap<>();
         final_return_obj.put("planID", -1);
         final_return_obj.put("type", type);
-        final_return_obj.put("totalCost", totalCost);
+        final_return_obj.put("totalCost", (int) totalCost);
         final_return_obj.put("planName", planName);
         final_return_obj.put("currentCity", currentCity);
         final_return_obj.put("destinations", destination_value);
@@ -690,7 +690,7 @@ public class PlannerController {
 
         final_return_obj2.put("planID", -2);
         final_return_obj2.put("type", type);
-        final_return_obj2.put("totalCost", totalCost2);
+        final_return_obj2.put("totalCost", (int) totalCost2);
         final_return_obj2.put("planName", planName2);
         final_return_obj2.put("currentCity", currentCity);
         final_return_obj2.put("destinations", destination_value2);
